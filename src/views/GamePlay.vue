@@ -90,7 +90,7 @@
       <!-- 下一题按钮 -->
       <div v-if="showResult" class="action-area">
         <AppButton
-          :text="gameStore.isLastQuestion ? '查看结果' : '下一题'"
+          :text="gameStore.isLastQuestion ? '查看结果' : `下一题 (${countdown}s)`"
           type="success"
           size="large"
           icon="→"
@@ -123,6 +123,8 @@ const isCorrect = ref(false)
 const answerAnimation = ref('')
 const currentScore = ref(0)
 const startTime = ref(Date.now())
+const autoNextTimer = ref(null)
+const countdown = ref(3)
 
 // 计算属性
 const currentQuestion = computed(() => gameStore.currentQuestion)
@@ -150,6 +152,9 @@ const selectAnswer = (answer) => {
   setTimeout(() => {
     answerAnimation.value = ''
   }, 500)
+
+  // 启动3秒自动跳转倒计时
+  startAutoNextTimer()
 }
 
 const getCurrentQuestionScore = () => {
@@ -157,7 +162,34 @@ const getCurrentQuestionScore = () => {
   return scoreMap[gameStore.currentDifficulty] || 10
 }
 
+const startAutoNextTimer = () => {
+  // 清除之前的计时器
+  clearAutoNextTimer()
+  
+  // 重置倒计时
+  countdown.value = 3
+  
+  // 启动倒计时
+  autoNextTimer.value = setInterval(() => {
+    countdown.value--
+    if (countdown.value <= 0) {
+      clearAutoNextTimer()
+      nextQuestion()
+    }
+  }, 1000)
+}
+
+const clearAutoNextTimer = () => {
+  if (autoNextTimer.value) {
+    clearInterval(autoNextTimer.value)
+    autoNextTimer.value = null
+  }
+}
+
 const nextQuestion = () => {
+  // 清除自动跳转计时器
+  clearAutoNextTimer()
+  
   const hasNext = gameStore.nextQuestion()
   
   if (!hasNext) {
@@ -168,6 +200,7 @@ const nextQuestion = () => {
     selectedAnswer.value = null
     showResult.value = false
     isCorrect.value = false
+    countdown.value = 3
   }
 }
 
@@ -187,6 +220,9 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => {
+  // 清除自动跳转计时器
+  clearAutoNextTimer()
+  
   // 计算学习时长
   const duration = Math.floor((Date.now() - startTime.value) / 1000)
   console.log('本次学习时长:', duration, '秒')
@@ -240,14 +276,14 @@ onBeforeUnmount(() => {
 .question-container {
   background: var(--bg-card);
   border-radius: var(--border-radius-large);
-  padding: 40px;
+  padding: 24px;
   box-shadow: var(--shadow-medium);
-  margin-bottom: 30px;
+  margin-bottom: 16px;
 }
 
 .question-header {
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 16px;
 }
 
 .question-title {
@@ -259,14 +295,14 @@ onBeforeUnmount(() => {
 
 .question-display {
   text-align: center;
-  margin-bottom: 40px;
-  padding: 40px;
+  margin-bottom: 35px;
+  padding: 35px;
   background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E4 100%);
   border-radius: var(--border-radius-large);
 }
 
 .question-text {
-  font-size: var(--font-size-huge);
+  font-size: 42px;
   font-weight: 700;
   color: var(--primary-color);
 }
@@ -274,12 +310,12 @@ onBeforeUnmount(() => {
 .options-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: 16px;
+  margin-bottom: 20px;
 }
 
 .option-item {
-  padding: 30px;
+  padding: 24px;
   background: var(--bg-card);
   border: 3px solid var(--bg-secondary);
   border-radius: var(--border-radius-medium);
@@ -341,7 +377,7 @@ onBeforeUnmount(() => {
 }
 
 .feedback-icon {
-  font-size: 48px;
+  font-size: 40px;
 }
 
 .feedback-text {
@@ -351,8 +387,8 @@ onBeforeUnmount(() => {
 
 .combo-display {
   text-align: center;
-  margin-top: 20px;
-  padding: 12px;
+  margin-top: 16px;
+  padding: 10px;
   background: linear-gradient(135deg, #FFD93D 0%, #FFE16D 100%);
   border-radius: var(--border-radius-medium);
   font-size: var(--font-size-large);
@@ -381,16 +417,29 @@ onBeforeUnmount(() => {
 
 /* 响应式 */
 @media (max-width: 768px) {
+  .game-page {
+    padding: 12px;
+    padding-top: 12px;
+  }
+
   .question-container {
-    padding: 20px;
+    padding: 16px;
   }
 
   .question-text {
-    font-size: 36px;
+    font-size: 32px;
+  }
+
+  .question-display {
+    padding: 20px;
   }
 
   .options-grid {
     grid-template-columns: 1fr;
+  }
+
+  .option-item {
+    padding: 20px;
   }
 
   .option-content {
