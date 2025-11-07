@@ -237,7 +237,7 @@ class SoundManager {
    */
   playBackgroundMusic(type = 'home') {
     // 检查全局变量，优先级高于设置
-    if (window.BACKGROUND_MUSIC_ENABLED === false) return
+    // if (window.BACKGROUND_MUSIC_ENABLED === false) return
     
     if (!this.musicEnabled || !this.audioContext) return
 
