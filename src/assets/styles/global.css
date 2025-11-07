@@ -1,48 +1,81 @@
-/* 全局CSS变量 - 可爱卡通风格 */
+/* 全局CSS变量 - 动态主题系统 */
 :root {
+  /* 主题颜色变量（由themeStore动态注入） */
   /* 主色调 */
-  --primary-color: #FF6B9D;
-  --secondary-color: #FFA07A;
-  --success-color: #98D8C8;
-  --warning-color: #FFD93D;
-  --error-color: #FF6B6B;
-  --info-color: #6BCF7F;
+  --primary: #3498DB;
+  --primary-hover: #2980B9;
+  --primary-light: #5DADE2;
+  --secondary: #FFA500;
+  --secondary-hover: #FF8C00;
+  
+  /* 语义色 */
+  --success: #2ECC71;
+  --warning: #F39C12;
+  --error: #E74C3C;
+  --info: #1ABC9C;
   
   /* 背景色 */
-  --bg-primary: #FFF5E4;
-  --bg-secondary: #FFF9F0;
+  --bg-primary: #F7F8FA;
+  --bg-secondary: #FFFFFF;
   --bg-card: #FFFFFF;
+  --bg-hover: #F0F2F5;
   
   /* 文字色 */
   --text-primary: #333333;
   --text-secondary: #666666;
   --text-light: #999999;
+  --text-inverse: #FFFFFF;
   
-  /* 字体 */
+  /* 边框色 */
+  --border: #E0E0E0;
+  --border-light: #F0F0F0;
+  
+  /* 阴影（由主题动态注入） */
+  --shadow-light: 0 2px 8px rgba(52, 152, 219, 0.08);
+  --shadow-medium: 0 4px 16px rgba(52, 152, 219, 0.12);
+  --shadow-heavy: 0 8px 24px rgba(52, 152, 219, 0.16);
+  
+  /* 圆角（由主题动态注入） */
+  --radius-small: 8px;
+  --radius-medium: 12px;
+  --radius-large: 16px;
+  --radius-round: 50%;
+  
+  /* 字体（固定不变） */
   --font-family: 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', sans-serif;
   
-  /* 字号 */
+  /* 字号（固定不变） */
   --font-size-huge: 48px;
   --font-size-xlarge: 32px;
   --font-size-large: 24px;
   --font-size-medium: 18px;
   --font-size-small: 14px;
+  --font-size-tiny: 12px;
   
-  /* 圆角 */
-  --border-radius-small: 8px;
-  --border-radius-medium: 12px;
-  --border-radius-large: 16px;
-  --border-radius-round: 50%;
-  
-  /* 阴影 */
-  --shadow-light: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-medium: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-heavy: 0 8px 24px rgba(0, 0, 0, 0.15);
-  
-  /* 过渡 */
+  /* 过渡（固定不变） */
   --transition-fast: 0.2s ease;
   --transition-normal: 0.3s ease;
   --transition-slow: 0.5s ease;
+  
+  /* 间距（固定不变） */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-xxl: 48px;
+}
+
+/* 主题切换过渡动画 */
+:root {
+  transition: background-color var(--transition-normal);
+}
+
+* {
+  transition: color var(--transition-fast), 
+              background-color var(--transition-fast),
+              border-color var(--transition-fast),
+              box-shadow var(--transition-fast);
 }
 
 * {
@@ -58,6 +91,7 @@ body {
   min-height: 100vh;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 #app {
@@ -76,12 +110,12 @@ body {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--primary-color);
+  background: var(--primary);
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #FF5589;
+  background: var(--primary-hover);
 }
 
 /* 动画定义 */

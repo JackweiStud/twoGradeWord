@@ -65,6 +65,14 @@
               <span class="diff-stat-icon">{{ diff.icon }}</span>
               <span class="diff-stat-name">{{ diff.name }}</span>
             </div>
+            <!-- 使用环形进度条展示正确率 -->
+            <div class="diff-stat-progress">
+              <AppProgress
+                :value="Math.round(diff.accuracy * 100)"
+                :size="100"
+                :label="diff.name"
+              />
+            </div>
             <div class="diff-stat-data">
               <div class="diff-stat-row">
                 <span class="diff-stat-label">题目数</span>
@@ -74,18 +82,7 @@
                 <span class="diff-stat-label">答对数</span>
                 <span class="diff-stat-value">{{ diff.correctCount }}</span>
               </div>
-              <div class="diff-stat-row">
-                <span class="diff-stat-label">正确率</span>
-                <span class="diff-stat-value" :class="getAccuracyClass(diff.accuracy)">
-                  {{ Math.round(diff.accuracy * 100) }}%
-                </span>
-              </div>
             </div>
-            <AppProgress
-              :percent="diff.accuracy * 100"
-              :type="getProgressType(diff.accuracy)"
-              :show-info="false"
-            />
           </div>
         </div>
       </AppCard>
@@ -280,7 +277,7 @@ const getProgressType = (accuracy) => {
 .overview-value {
   font-size: var(--font-size-xlarge);
   font-weight: 700;
-  color: var(--primary-color);
+  color: var(--primary);
 }
 
 .recent-card {
@@ -299,7 +296,13 @@ const getProgressType = (accuracy) => {
   align-items: center;
   padding: 16px;
   background: var(--bg-secondary);
-  border-radius: var(--border-radius-small);
+  border-radius: var(--radius-small);
+  transition: transform var(--transition-normal);
+}
+
+.recent-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-light);
 }
 
 .recent-date {
@@ -322,7 +325,7 @@ const getProgressType = (accuracy) => {
 .recent-score {
   font-size: var(--font-size-small);
   font-weight: 600;
-  color: var(--primary-color);
+  color: var(--primary);
 }
 
 .recent-accuracy {
@@ -333,18 +336,18 @@ const getProgressType = (accuracy) => {
 }
 
 .accuracy-high {
-  background: var(--success-color);
-  color: white;
+  background: var(--success);
+  color: var(--text-inverse);
 }
 
 .accuracy-medium {
-  background: var(--warning-color);
-  color: #333;
+  background: var(--secondary);
+  color: var(--text-inverse);
 }
 
 .accuracy-low {
-  background: var(--error-color);
-  color: white;
+  background: var(--error);
+  color: var(--text-inverse);
 }
 
 .difficulty-card {
@@ -358,16 +361,30 @@ const getProgressType = (accuracy) => {
 }
 
 .diff-stat-item {
-  padding: 20px;
+  padding: var(--spacing-lg);
   background: var(--bg-secondary);
-  border-radius: var(--border-radius-medium);
+  border-radius: var(--radius-medium);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all var(--transition-normal);
+}
+
+.diff-stat-item:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-medium);
 }
 
 .diff-stat-header {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: var(--spacing-md);
+}
+
+.diff-stat-progress {
+  margin-bottom: var(--spacing-md);
 }
 
 .diff-stat-icon {
@@ -383,8 +400,8 @@ const getProgressType = (accuracy) => {
 .diff-stat-data {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  margin-bottom: 16px;
+  gap: var(--spacing-sm);
+  width: 100%;
 }
 
 .diff-stat-row {
@@ -420,7 +437,13 @@ const getProgressType = (accuracy) => {
   gap: 16px;
   padding: 16px;
   background: var(--bg-secondary);
-  border-radius: var(--border-radius-small);
+  border-radius: var(--radius-small);
+  transition: transform var(--transition-normal);
+}
+
+.top-wrong-item:hover {
+  transform: translateX(4px);
+  box-shadow: var(--shadow-light);
 }
 
 .top-rank {
@@ -429,12 +452,13 @@ const getProgressType = (accuracy) => {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #FF6B9D 0%, #FF8FB3 100%);
-  color: white;
+  background: linear-gradient(135deg, var(--error) 0%, var(--warning) 100%);
+  color: var(--text-inverse);
   font-size: var(--font-size-medium);
   font-weight: 700;
   border-radius: 50%;
   flex-shrink: 0;
+  box-shadow: var(--shadow-light);
 }
 
 .top-word-info {
@@ -467,10 +491,11 @@ const getProgressType = (accuracy) => {
 .top-word-count {
   font-size: var(--font-size-small);
   font-weight: 600;
-  color: var(--error-color);
+  color: var(--error);
   padding: 6px 12px;
   background: var(--bg-card);
   border-radius: 12px;
+  box-shadow: var(--shadow-light);
 }
 
 .empty-recent,
