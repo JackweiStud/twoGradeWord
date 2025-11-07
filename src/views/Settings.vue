@@ -48,7 +48,7 @@
         </div>
         <div class="setting-item" v-if="settings.sound.enabled">
           <div class="setting-info">
-            <div class="setting-label">音量</div>
+            <div class="setting-label">音效音量</div>
             <div class="setting-desc">{{ Math.round(settings.sound.volume * 100) }}%</div>
           </div>
           <input
@@ -57,6 +57,39 @@
             max="1"
             step="0.1"
             v-model.number="settings.sound.volume"
+            @change="saveSettings"
+            class="volume-slider"
+          />
+        </div>
+      </AppCard>
+
+      <!-- 背景音乐设置 -->
+      <AppCard title="🎵 背景音乐设置" class="section-card">
+        <div class="setting-item">
+          <div class="setting-info">
+            <div class="setting-label">开启背景音乐</div>
+            <div class="setting-desc">开启背景音乐播放</div>
+          </div>
+          <label class="switch">
+            <input
+              type="checkbox"
+              v-model="settings.music.enabled"
+              @change="saveSettings"
+            />
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-item" v-if="settings.music.enabled">
+          <div class="setting-info">
+            <div class="setting-label">音乐音量</div>
+            <div class="setting-desc">{{ Math.round(settings.music.volume * 100) }}%</div>
+          </div>
+          <input
+            type="range"
+            min="0"
+            max="1"
+            step="0.1"
+            v-model.number="settings.music.volume"
             @change="saveSettings"
             class="volume-slider"
           />
@@ -124,6 +157,7 @@
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
+import { soundManager } from '@/utils/soundManager'
 import AppCard from '@/components/common/AppCard.vue'
 import AppButton from '@/components/common/AppButton.vue'
 
@@ -133,6 +167,7 @@ const userStore = useUserStore()
 // 状态
 const settings = ref({
   sound: { enabled: true, volume: 0.7 },
+  music: { enabled: true, volume: 0.5 },
   animation: { enabled: true, speed: 'normal' },
   display: { theme: 'cute', fontSize: 'medium' },
   game: { autoNextQuestion: false, showPinyinHint: true }
@@ -149,6 +184,9 @@ const formatDate = (dateString) => {
 }
 
 const saveSettings = () => {
+  // 更新音效管理器设置
+  soundManager.updateSettings(settings.value)
+  // 保存到存储
   userStore.updateSettings(settings.value)
 }
 
@@ -167,7 +205,13 @@ const clearAllData = () => {
 // 生命周期
 onMounted(() => {
   if (userStore.settings) {
-    settings.value = { ...userStore.settings }
+    settings.value = { 
+      ...userStore.settings,
+      // 确保有music设置
+      music: userStore.settings.music || { enabled: true, volume: 0.5 }
+    }
+    // 同步到音效管理器
+    soundManager.updateSettings(settings.value)
   }
 })
 </script>

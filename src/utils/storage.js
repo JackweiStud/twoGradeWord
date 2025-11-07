@@ -127,12 +127,18 @@ export const storage = {
     if (!existing) {
       const initialData = {
         sound: { enabled: true, volume: 0.7 },
+        music: { enabled: true, volume: 0.5 },
         animation: { enabled: true, speed: 'normal' },
         display: { theme: 'cute', fontSize: 'medium' },
         game: { autoNextQuestion: false, showPinyinHint: true }
       }
       this.set('SETTINGS', initialData)
       return initialData
+    }
+    // 兼容旧数据，添加music设置
+    if (!existing.music) {
+      existing.music = { enabled: true, volume: 0.5 }
+      this.set('SETTINGS', existing)
     }
     return existing
   }
