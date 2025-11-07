@@ -58,7 +58,7 @@ const selectTheme = (themeId) => {
   if (themeId === currentThemeId.value) return
   
   themeStore.switchTheme(themeId)
-  soundManager.play('success')
+  soundManager.playClick()
 }
 </script>
 
