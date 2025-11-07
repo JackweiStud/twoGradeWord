@@ -288,7 +288,7 @@ const startGame = () => {
 
 .mode-active {
   border-color: var(--primary-color);
-  background: linear-gradient(135deg, #FFF5E4 0%, #FFE8D6 100%);
+  background: var(--gradient-selected);
   box-shadow: var(--shadow-medium);
 }
 
