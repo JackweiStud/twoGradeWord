@@ -17,6 +17,7 @@ export const useGameStore = defineStore('game', {
     // 当前游戏配置
     currentDifficulty: 'simple', // simple/medium/hard
     currentMode: 'all', // all/unit/wrong
+    currentQuestionType: 'C', // A/B/C (A:看拼音选汉字, B:看汉字选拼音, C:混合)
     
     // 题目数据
     questions: [],
@@ -82,7 +83,7 @@ export const useGameStore = defineStore('game', {
     },
 
     // 开始新游戏
-    startNewGame(difficulty, mode = 'all') {
+    startNewGame(difficulty, mode = 'all', questionType = 'C') {
       if (!this.parsedData) {
         console.error('词库未加载')
         return false
@@ -90,6 +91,7 @@ export const useGameStore = defineStore('game', {
 
       this.currentDifficulty = difficulty
       this.currentMode = mode
+      this.currentQuestionType = questionType
       
       // 根据难度筛选词库
       let wordPool = filterByDifficulty(this.parsedData, difficulty)
@@ -111,8 +113,8 @@ export const useGameStore = defineStore('game', {
         }
       }
 
-      // 生成题目
-      this.questions = generateQuestions(wordPool, difficulty, mode)
+      // 生成题目（传入答题类型）
+      this.questions = generateQuestions(wordPool, difficulty, mode, questionType)
       
       // 重置游戏状态
       this.currentQuestionIndex = 0

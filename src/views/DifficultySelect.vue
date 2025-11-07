@@ -61,6 +61,26 @@
         </div>
       </div>
 
+      <!-- 答题类型选择 -->
+      <div class="question-type-section">
+        <h3 class="section-title">选择答题类型</h3>
+        <div class="type-list">
+          <div
+            v-for="type in questionTypes"
+            :key="type.id"
+            class="type-item"
+            :class="{ 'type-active': selectedQuestionType === type.id }"
+            @click="selectQuestionType(type.id)"
+          >
+            <div class="type-icon">{{ type.icon }}</div>
+            <div class="type-content">
+              <div class="type-name">{{ type.name }}</div>
+              <div class="type-desc">{{ type.description }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- 开始按钮 -->
       <div class="action-buttons">
         <AppButton
@@ -128,9 +148,32 @@ const modes = [
   { id: 'wrong', name: '错词复习', icon: '📕' }
 ]
 
+// 答题类型配置
+const questionTypes = [
+  { 
+    id: 'A', 
+    name: '模式A：看拼音选汉字', 
+    icon: '📖',
+    description: '根据拼音选择对应的汉字'
+  },
+  { 
+    id: 'B', 
+    name: '模式B：看汉字选拼音', 
+    icon: '🔤',
+    description: '根据汉字选择对应的拼音'
+  },
+  { 
+    id: 'C', 
+    name: '模式C：混合模式', 
+    icon: '🎲',
+    description: '随机混合A、B两种模式'
+  }
+]
+
 // 状态
 const selectedDifficulty = ref('simple')
 const selectedMode = ref('all')
+const selectedQuestionType = ref('C')
 
 // 方法
 const goBack = () => {
@@ -145,6 +188,10 @@ const selectMode = (id) => {
   selectedMode.value = id
 }
 
+const selectQuestionType = (id) => {
+  selectedQuestionType.value = id
+}
+
 const startGame = () => {
   if (!selectedDifficulty.value) return
 
@@ -157,8 +204,8 @@ const startGame = () => {
     }
   }
 
-  // 开始游戏
-  const success = gameStore.startNewGame(selectedDifficulty.value, selectedMode.value)
+  // 开始游戏（传入答题类型）
+  const success = gameStore.startNewGame(selectedDifficulty.value, selectedMode.value, selectedQuestionType.value)
   
   if (success) {
     router.push('/game')
@@ -252,6 +299,10 @@ const startGame = () => {
 }
 
 .mode-section {
+  margin-bottom: 30px;
+}
+
+.question-type-section {
   margin-bottom: 40px;
 }
 
@@ -288,7 +339,7 @@ const startGame = () => {
 
 .mode-active {
   border-color: var(--primary-color);
-  background: linear-gradient(135deg, #FFF5E4 0%, #FFE8D6 100%);
+  background: var(--gradient-selected);
   box-shadow: var(--shadow-medium);
 }
 
@@ -300,6 +351,56 @@ const startGame = () => {
   font-size: var(--font-size-medium);
   font-weight: 500;
   color: var(--text-primary);
+}
+
+.type-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.type-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 20px;
+  background: var(--bg-card);
+  border: 2px solid var(--bg-secondary);
+  border-radius: var(--border-radius-medium);
+  cursor: pointer;
+  transition: all var(--transition-normal);
+}
+
+.type-item:hover {
+  border-color: var(--primary-color);
+  transform: translateX(4px);
+}
+
+.type-active {
+  border-color: var(--primary-color);
+  background: var(--gradient-selected);
+  box-shadow: var(--shadow-medium);
+}
+
+.type-icon {
+  font-size: 32px;
+  flex-shrink: 0;
+}
+
+.type-content {
+  flex: 1;
+}
+
+.type-name {
+  font-size: var(--font-size-medium);
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 4px;
+}
+
+.type-desc {
+  font-size: var(--font-size-small);
+  color: var(--text-secondary);
 }
 
 .action-buttons {

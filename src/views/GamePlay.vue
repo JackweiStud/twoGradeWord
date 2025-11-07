@@ -326,7 +326,7 @@ onBeforeUnmount(() => {
   text-align: center;
   margin-bottom: 35px;
   padding: 35px;
-  background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E4 100%);
+  background: var(--gradient-question);
   border-radius: var(--border-radius-large);
 }
 
@@ -367,18 +367,18 @@ onBeforeUnmount(() => {
 
 .option-selected {
   border-color: var(--primary-color);
-  background: linear-gradient(135deg, #FFF5E4 0%, #FFE8D6 100%);
+  background: var(--gradient-selected);
 }
 
 .option-correct {
   border-color: var(--success-color);
-  background: linear-gradient(135deg, #E8F8F5 0%, #D5F5E8 100%);
+  background: var(--gradient-correct);
   animation: pulse 0.5s ease;
 }
 
 .option-wrong {
   border-color: var(--error-color);
-  background: linear-gradient(135deg, #FFE8E8 0%, #FFD5D5 100%);
+  background: var(--gradient-wrong);
   animation: shake 0.5s ease;
 }
 
@@ -418,11 +418,11 @@ onBeforeUnmount(() => {
   text-align: center;
   margin-top: 16px;
   padding: 10px;
-  background: linear-gradient(135deg, #FFD93D 0%, #FFE16D 100%);
+  background: var(--gradient-combo);
   border-radius: var(--border-radius-medium);
   font-size: var(--font-size-large);
   font-weight: 600;
-  color: #333;
+  color: var(--combo-text-color);
   animation: bounce 0.5s ease;
 }
 

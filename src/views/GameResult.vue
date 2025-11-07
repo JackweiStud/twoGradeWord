@@ -235,7 +235,7 @@ onBeforeUnmount(() => {
 .result-title {
   font-size: var(--font-size-huge);
   font-weight: 700;
-  background: linear-gradient(135deg, #FF6B9D 0%, #FFA07A 100%);
+  background: var(--gradient-score-text);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -279,7 +279,7 @@ onBeforeUnmount(() => {
 .stat-item.large {
   grid-column: span 4;
   padding: 20px;
-  background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E4 100%);
+  background: var(--gradient-question);
   border-radius: var(--border-radius-medium);
 }
 
@@ -320,7 +320,7 @@ onBeforeUnmount(() => {
 }
 
 .breakdown-item.total {
-  background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E4 100%);
+  background: var(--gradient-question);
   font-weight: 600;
   padding: 16px;
   margin-top: 8px;
@@ -350,7 +350,7 @@ onBeforeUnmount(() => {
 .wrong-tip {
   margin-top: 16px;
   padding: 12px;
-  background: linear-gradient(135deg, #FFE8E8 0%, #FFD5D5 100%);
+  background: var(--gradient-wrong);
   border-radius: var(--border-radius-small);
   color: var(--error-color);
   font-size: var(--font-size-small);
@@ -362,7 +362,7 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 20px;
   padding: 24px;
-  background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E4 100%);
+  background: var(--gradient-question);
   border-radius: var(--border-radius-large);
   margin-bottom: 30px;
   box-shadow: var(--shadow-light);

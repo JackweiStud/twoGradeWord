@@ -53,6 +53,15 @@ export const themes = {
       radiusMedium: '12px',
       radiusLarge: '16px',
       radiusRound: '50%',
+      
+      // 答题界面专用渐变色
+      gradientQuestion: 'linear-gradient(135deg, #E3F2FD 0%, #BBDEFB 100%)',
+      gradientSelected: 'linear-gradient(135deg, #FFF5E4 0%, #FFE8D6 100%)',
+      gradientCorrect: 'linear-gradient(135deg, #E8F8F5 0%, #D5F5E8 100%)',
+      gradientWrong: 'linear-gradient(135deg, #FFE8E8 0%, #FFD5D5 100%)',
+      gradientCombo: 'linear-gradient(135deg, #FFD93D 0%, #FFE16D 100%)',
+      gradientScoreText: 'linear-gradient(135deg, #FF6B9D 0%, #FFA07A 100%)',
+      comboTextColor: '#333333',
     }
   },
   
@@ -95,6 +104,15 @@ export const themes = {
       radiusMedium: '12px',
       radiusLarge: '16px',
       radiusRound: '50%',
+      
+      // 答题界面专用渐变色
+      gradientQuestion: 'linear-gradient(135deg, #FFF0F5 0%, #FFE0F0 100%)',
+      gradientSelected: 'linear-gradient(135deg, #FFE0F0 0%, #FFD0E8 100%)',
+      gradientCorrect: 'linear-gradient(135deg, #E0F8F0 0%, #D0F5E8 100%)',
+      gradientWrong: 'linear-gradient(135deg, #FFE0E8 0%, #FFD0DD 100%)',
+      gradientCombo: 'linear-gradient(135deg, #FFE8A3 0%, #FFF0B8 100%)',
+      gradientScoreText: 'linear-gradient(135deg, #FF6B9D 0%, #FFA07A 100%)',
+      comboTextColor: '#663366',
     }
   },
   
@@ -137,6 +155,15 @@ export const themes = {
       radiusMedium: '10px',
       radiusLarge: '12px',
       radiusRound: '50%',
+      
+      // 答题界面专用渐变色（深色主题）
+      gradientQuestion: 'linear-gradient(135deg, #2A3A4A 0%, #35455A 100%)',
+      gradientSelected: 'linear-gradient(135deg, #3A4A5A 0%, #455A6A 100%)',
+      gradientCorrect: 'linear-gradient(135deg, #2A4A3A 0%, #356A45 100%)',
+      gradientWrong: 'linear-gradient(135deg, #4A2A2A 0%, #6A3535 100%)',
+      gradientCombo: 'linear-gradient(135deg, #5A4A2A 0%, #7A6A3A 100%)',
+      gradientScoreText: 'linear-gradient(135deg, #5BA3F5 0%, #FFB520 100%)',
+      comboTextColor: '#FFE16D',
     }
   },
   
@@ -179,6 +206,15 @@ export const themes = {
       radiusMedium: '16px',
       radiusLarge: '20px',
       radiusRound: '50%',
+      
+      // 答题界面专用渐变色
+      gradientQuestion: 'linear-gradient(135deg, #FAF0E6 0%, #F5E6D3 100%)',
+      gradientSelected: 'linear-gradient(135deg, #F5E6D3 0%, #F0DCC8 100%)',
+      gradientCorrect: 'linear-gradient(135deg, #E6F5E8 0%, #D8F0DC 100%)',
+      gradientWrong: 'linear-gradient(135deg, #F5E6E6 0%, #F0D8D8 100%)',
+      gradientCombo: 'linear-gradient(135deg, #F5E8C8 0%, #F0E0B8 100%)',
+      gradientScoreText: 'linear-gradient(135deg, #E8B4B8 0%, #F4D6B0 100%)',
+      comboTextColor: '#5D4037',
     }
   },
   
@@ -221,6 +257,15 @@ export const themes = {
       radiusMedium: '12px',
       radiusLarge: '16px',
       radiusRound: '50%',
+      
+      // 答题界面专用渐变色（深色主题）
+      gradientQuestion: 'linear-gradient(135deg, #2A2A3F 0%, #35354F 100%)',
+      gradientSelected: 'linear-gradient(135deg, #3A3A50 0%, #454560 100%)',
+      gradientCorrect: 'linear-gradient(135deg, #2A3F3A 0%, #356A45 100%)',
+      gradientWrong: 'linear-gradient(135deg, #3F2A2A 0%, #603535 100%)',
+      gradientCombo: 'linear-gradient(135deg, #4A3F5F 0%, #6A5A8F 100%)',
+      gradientScoreText: 'linear-gradient(135deg, #A78BFA 0%, #22D3EE 100%)',
+      comboTextColor: '#C4B5FD',
     }
   }
 }

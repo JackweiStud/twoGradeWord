@@ -8,9 +8,10 @@
  * @param {Array} wordPool - 词库池
  * @param {String} difficulty - 难度 (simple/medium/hard)
  * @param {String} mode - 模式 (all/unit/wrong)
+ * @param {String} questionType - 答题类型 (A/B/C) A:看拼音选汉字, B:看汉字选拼音, C:混合
  * @returns {Array} 题目数组
  */
-export const generateQuestions = (wordPool, difficulty, mode = 'all') => {
+export const generateQuestions = (wordPool, difficulty, mode = 'all', questionType = 'C') => {
   if (!wordPool || wordPool.length === 0) {
     console.error('词库为空，无法生成题目')
     return []
@@ -35,8 +36,18 @@ export const generateQuestions = (wordPool, difficulty, mode = 'all') => {
     usedIndices.add(randomIndex)
     const correctWord = wordPool[randomIndex]
 
-    // 随机选择题目模式（模式A或模式B）
-    const questionMode = Math.random() > 0.5 ? 'A' : 'B'
+    // 根据答题类型确定题目模式
+    let questionMode
+    if (questionType === 'A') {
+      // 模式A：全部看拼音选汉字
+      questionMode = 'A'
+    } else if (questionType === 'B') {
+      // 模式B：全部看汉字选拼音
+      questionMode = 'B'
+    } else {
+      // 模式C：混合模式，随机选择
+      questionMode = Math.random() > 0.5 ? 'A' : 'B'
+    }
 
     // 生成干扰项
     const distractors = generateDistractors(correctWord, wordPool, questionMode, usedIndices)
