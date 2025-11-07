@@ -30,6 +30,11 @@
         </div>
       </AppCard>
 
+      <!-- 主题设置 -->
+      <AppCard title="🎨 主题设置" class="section-card">
+        <ThemeSelector />
+      </AppCard>
+
       <!-- 音效设置 -->
       <AppCard title="🔊 音效设置" class="section-card">
         <div class="setting-item">
@@ -160,6 +165,7 @@ import { useUserStore } from '@/stores/userStore'
 import { soundManager } from '@/utils/soundManager'
 import AppCard from '@/components/common/AppCard.vue'
 import AppButton from '@/components/common/AppButton.vue'
+import ThemeSelector from '@/components/common/ThemeSelector.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -258,7 +264,7 @@ onMounted(() => {
   align-items: center;
   padding: 12px;
   background: var(--bg-secondary);
-  border-radius: var(--border-radius-small);
+  border-radius: var(--radius-small);
 }
 
 .info-label {
@@ -339,7 +345,7 @@ onMounted(() => {
 }
 
 input:checked + .slider {
-  background-color: var(--success-color);
+  background-color: var(--success);
 }
 
 input:checked + .slider:before {
@@ -362,7 +368,7 @@ input:checked + .slider:before {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--primary-color);
+  background: var(--primary);
   cursor: pointer;
 }
 
@@ -370,7 +376,7 @@ input:checked + .slider:before {
   width: 18px;
   height: 18px;
   border-radius: 50%;
-  background: var(--primary-color);
+  background: var(--primary);
   cursor: pointer;
   border: none;
 }
@@ -393,7 +399,7 @@ input:checked + .slider:before {
   align-items: center;
   padding: 12px;
   background: var(--bg-secondary);
-  border-radius: var(--border-radius-small);
+  border-radius: var(--radius-small);
 }
 
 .about-label {

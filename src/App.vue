@@ -12,12 +12,17 @@
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useGameStore } from '@/stores/gameStore'
+import { useThemeStore } from '@/stores/themeStore'
 import { soundManager } from '@/utils/soundManager'
 
 const userStore = useUserStore()
 const gameStore = useGameStore()
+const themeStore = useThemeStore()
 
 onMounted(async () => {
+  // 初始化主题系统（优先加载，确保页面首次渲染就有正确主题）
+  themeStore.initTheme()
+  
   // 初始化用户数据
   userStore.loadUserData()
   
@@ -30,7 +35,7 @@ onMounted(async () => {
     soundManager.updateSettings(settings)
   }
   
-  console.log('应用初始化完成')
+  console.log('应用初始化完成 - 当前主题:', themeStore.currentTheme.name)
 })
 </script>
 
@@ -38,7 +43,8 @@ onMounted(async () => {
 .app-container {
   width: 100%;
   min-height: 100vh;
-  background: linear-gradient(135deg, #FFF5E4 0%, #FFE8D6 100%);
+  background: var(--bg-primary);
+  transition: background var(--transition-normal);
 }
 
 /* 页面切换动画 */

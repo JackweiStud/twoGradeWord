@@ -8,8 +8,19 @@
       </header>
 
       <!-- 学习进度卡片 -->
-      <AppCard title="学习进度" type="primary" class="progress-card">
+      <AppCard title="📊 学习进度" type="primary" class="progress-card">
         <div class="progress-stats">
+          <!-- 使用环形进度条显示正确率 -->
+          <div class="stat-item featured">
+            <AppProgress 
+              :value="accuracyPercent" 
+              :size="120" 
+              label="正确率"
+              :color="accuracyColor"
+            />
+          </div>
+          
+          <!-- 其他统计数据 -->
           <div class="stat-item">
             <div class="stat-icon">🏆</div>
             <div class="stat-value">{{ userStore.totalScore }}</div>
@@ -25,29 +36,27 @@
             <div class="stat-value">{{ userStore.masteredWordsCount }}</div>
             <div class="stat-label">掌握词汇</div>
           </div>
-          <div class="stat-item">
-            <div class="stat-icon">🎯</div>
-            <div class="stat-value">{{ accuracyPercent }}%</div>
-            <div class="stat-label">正确率</div>
-          </div>
         </div>
       </AppCard>
 
-      <!-- 功能按钮 -->
-      <div class="action-grid">
-        <AppCard
-          title="🎮 开始闯关"
-          clickable
-          class="action-card"
+      <!-- 主按钮 - 开始闯关 -->
+      <div class="main-action">
+        <AppButton
+          text="🎮 开始闯关"
+          type="primary"
+          size="large"
           @click="startGame"
-        >
-          <p class="action-desc">挑战汉字，提升能力</p>
-        </AppCard>
+          class="start-button"
+        />
+      </div>
 
+      <!-- 功能按钮网格 -->
+      <div class="action-grid">
         <AppCard
           title="📕 错词本"
           :badge="wrongWordsCount"
           clickable
+          type="warning"
           class="action-card"
           @click="goToWrongWords"
         >
@@ -55,8 +64,9 @@
         </AppCard>
 
         <AppCard
-          title="📊 学习统计"
+          title="📈 学习统计"
           clickable
+          type="primary"
           class="action-card"
           @click="goToStats"
         >
@@ -70,6 +80,15 @@
           @click="goToSettings"
         >
           <p class="action-desc">个性化你的学习</p>
+        </AppCard>
+
+        <AppCard
+          title="🎨 主题"
+          clickable
+          class="action-card"
+          @click="goToTheme"
+        >
+          <p class="action-desc">切换界面主题</p>
         </AppCard>
       </div>
 
@@ -100,6 +119,8 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
 import { soundManager } from '@/utils/soundManager'
 import AppCard from '@/components/common/AppCard.vue'
+import AppButton from '@/components/common/AppButton.vue'
+import AppProgress from '@/components/common/AppProgress.vue'
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -107,6 +128,15 @@ const userStore = useUserStore()
 // 计算属性
 const accuracyPercent = computed(() => {
   return Math.round(userStore.accuracy * 100)
+})
+
+// 根据正确率动态设置颜色
+const accuracyColor = computed(() => {
+  const accuracy = accuracyPercent.value
+  if (accuracy >= 90) return 'var(--success)'
+  if (accuracy >= 70) return 'var(--secondary)'
+  if (accuracy >= 50) return 'var(--primary)'
+  return 'var(--error)'
 })
 
 const wrongWordsCount = computed(() => {
@@ -131,18 +161,27 @@ const todayCorrectCount = computed(() => {
 
 // 方法
 const startGame = () => {
+  soundManager.play('click')
   router.push('/difficulty')
 }
 
 const goToWrongWords = () => {
+  soundManager.play('click')
   router.push('/wrong-words')
 }
 
 const goToStats = () => {
+  soundManager.play('click')
   router.push('/stats')
 }
 
 const goToSettings = () => {
+  soundManager.play('click')
+  router.push('/settings')
+}
+
+const goToTheme = () => {
+  soundManager.play('click')
   router.push('/settings')
 }
 
@@ -167,7 +206,7 @@ onBeforeUnmount(() => {
 <style scoped>
 .home-page {
   min-height: 100vh;
-  padding: 20px;
+  padding: var(--spacing-lg);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -175,119 +214,206 @@ onBeforeUnmount(() => {
 
 .home-container {
   width: 100%;
-  max-width: 800px;
-  animation: fadeIn 0.5s ease;
+  max-width: 900px;
+  animation: fadeIn 0.6s ease;
 }
 
 .home-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: var(--spacing-xxl);
 }
 
 .app-title {
-  font-size: 48px;
+  font-size: var(--font-size-huge);
   font-weight: 700;
-  background: linear-gradient(135deg, #FF6B9D 0%, #FFA07A 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  margin-bottom: 10px;
+  margin-bottom: var(--spacing-sm);
   animation: bounce 1s ease;
+  letter-spacing: -1px;
 }
 
 .app-subtitle {
   font-size: var(--font-size-medium);
   color: var(--text-secondary);
+  font-weight: 500;
 }
 
 .progress-card {
-  margin-bottom: 30px;
+  margin-bottom: var(--spacing-lg);
 }
 
 .progress-stats {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  text-align: center;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: var(--spacing-lg);
+  align-items: center;
 }
 
 .stat-item {
-  padding: 10px;
+  text-align: center;
+  padding: var(--spacing-sm);
+  transition: transform var(--transition-normal);
+}
+
+.stat-item:hover {
+  transform: translateY(-4px);
+}
+
+/* 突出显示的统计项（环形进度条） */
+.stat-item.featured {
+  grid-column: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .stat-icon {
-  font-size: 36px;
-  margin-bottom: 8px;
+  font-size: 40px;
+  margin-bottom: var(--spacing-sm);
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
 }
 
 .stat-value {
   font-size: var(--font-size-xlarge);
   font-weight: 700;
-  color: var(--primary-color);
-  margin-bottom: 4px;
+  color: var(--primary);
+  margin-bottom: var(--spacing-xs);
+  line-height: 1;
 }
 
 .stat-label {
   font-size: var(--font-size-small);
   color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* 主按钮区域 */
+.main-action {
+  margin-bottom: var(--spacing-lg);
+}
+
+.start-button {
+  width: 100%;
+  font-size: var(--font-size-large);
+  padding: var(--spacing-lg) var(--spacing-xl);
+  border-radius: var(--radius-large);
+  box-shadow: var(--shadow-heavy);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.start-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  animation: shine 3s infinite;
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  50%, 100% {
+    left: 100%;
+  }
 }
 
 .action-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px;
-  margin-bottom: 30px;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-lg);
 }
 
 .action-card {
   transition: all var(--transition-normal);
-}
-
-.action-card:hover {
-  transform: translateY(-4px) scale(1.02);
+  min-height: 100px;
 }
 
 .action-desc {
-  margin: 10px 0 0 0;
+  margin: var(--spacing-sm) 0 0 0;
   color: var(--text-secondary);
   font-size: var(--font-size-small);
+  line-height: 1.5;
 }
 
 .tip-card {
   display: flex;
   align-items: center;
-  gap: 16px;
-  padding: 20px;
-  background: linear-gradient(135deg, #FFF9F0 0%, #FFF5E4 100%);
-  border-radius: var(--border-radius-large);
-  border-left: 4px solid var(--info-color);
+  gap: var(--spacing-md);
+  padding: var(--spacing-lg);
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-hover) 100%);
+  border-radius: var(--radius-large);
+  border-left: 4px solid var(--info);
   box-shadow: var(--shadow-light);
+  animation: slideIn 0.5s ease;
 }
 
 .welcome-tip {
-  border-left: 4px solid var(--primary-color);
+  border-left: 4px solid var(--primary);
 }
 
 .tip-icon {
   font-size: 48px;
+  animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.tip-content {
+  flex: 1;
 }
 
 .tip-title {
   font-size: var(--font-size-medium);
   font-weight: 600;
   color: var(--text-primary);
-  margin-bottom: 4px;
+  margin-bottom: var(--spacing-xs);
 }
 
 .tip-text {
   font-size: var(--font-size-small);
   color: var(--text-secondary);
+  line-height: 1.6;
 }
 
 /* 响应式 */
 @media (max-width: 768px) {
+  .home-page {
+    padding: var(--spacing-md);
+  }
+
   .progress-stats {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+    gap: var(--spacing-md);
+  }
+
+  .stat-item.featured {
+    grid-column: 1;
   }
 
   .action-grid {
@@ -295,6 +421,10 @@ onBeforeUnmount(() => {
   }
 
   .app-title {
+    font-size: var(--font-size-xlarge);
+  }
+
+  .tip-icon {
     font-size: 36px;
   }
 }
