@@ -107,14 +107,17 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/gameStore'
+import { useUserStore } from '@/stores/userStore'
+import { soundManager } from '@/utils/soundManager'
 import AppButton from '@/components/common/AppButton.vue'
 import AppProgress from '@/components/common/AppProgress.vue'
 
 const router = useRouter()
 const gameStore = useGameStore()
+const userStore = useUserStore()
 
 // 状态
 const selectedAnswer = ref(null)
@@ -129,6 +132,13 @@ const countdown = ref(3)
 // 计算属性
 const currentQuestion = computed(() => gameStore.currentQuestion)
 
+// 监听连对次数，播放连对音效
+watch(() => gameStore.currentCombo, (newCombo, oldCombo) => {
+  if (newCombo > oldCombo && newCombo >= 3) {
+    soundManager.playCombo(newCombo)
+  }
+})
+
 // 方法
 const selectAnswer = (answer) => {
   if (showResult.value || !answer) return
@@ -140,12 +150,16 @@ const selectAnswer = (answer) => {
   isCorrect.value = result
   showResult.value = true
 
-  // 播放动画
+  // 播放音效和动画
   if (result) {
     answerAnimation.value = 'pulse'
     currentScore.value += getCurrentQuestionScore()
+    // 播放答对音效
+    soundManager.playCorrect()
   } else {
     answerAnimation.value = 'shake'
+    // 播放答错音效
+    soundManager.playWrong()
   }
 
   // 清除动画
@@ -206,6 +220,7 @@ const nextQuestion = () => {
 
 const confirmExit = () => {
   if (confirm('确定要退出吗？当前进度将不会保存。')) {
+    soundManager.stopMusic()
     gameStore.resetGame()
     router.push('/')
   }
@@ -215,13 +230,27 @@ const confirmExit = () => {
 onMounted(() => {
   if (!gameStore.gameStarted) {
     router.push('/difficulty')
+    return
   }
+  
   startTime.value = Date.now()
+  
+  // 加载音效设置
+  const settings = userStore.settings
+  if (settings) {
+    soundManager.updateSettings(settings)
+  }
+  
+  // 播放游戏背景音乐
+  soundManager.playBackgroundMusic('game')
 })
 
 onBeforeUnmount(() => {
   // 清除自动跳转计时器
   clearAutoNextTimer()
+  
+  // 停止背景音乐
+  soundManager.stopMusic()
   
   // 计算学习时长
   const duration = Math.floor((Date.now() - startTime.value) / 1000)

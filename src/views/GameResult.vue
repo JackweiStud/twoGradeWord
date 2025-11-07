@@ -99,10 +99,11 @@
 </template>
 
 <script setup>
-import { computed, onMounted } from 'vue'
+import { computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useGameStore } from '@/stores/gameStore'
 import { useUserStore } from '@/stores/userStore'
+import { soundManager } from '@/utils/soundManager'
 import AppCard from '@/components/common/AppCard.vue'
 import AppButton from '@/components/common/AppButton.vue'
 
@@ -160,14 +161,17 @@ const encouragementText = computed(() => {
 
 // 方法
 const playAgain = () => {
+  soundManager.stopMusic()
   router.push('/difficulty')
 }
 
 const goToWrongWords = () => {
+  soundManager.stopMusic()
   router.push('/wrong-words')
 }
 
 const goHome = () => {
+  soundManager.stopMusic()
   gameStore.resetGame()
   router.push('/')
 }
@@ -176,10 +180,35 @@ const goHome = () => {
 onMounted(() => {
   if (!gameResult.value) {
     router.push('/')
-  } else {
-    // 刷新用户数据
-    userStore.refreshUserData()
+    return
   }
+  
+  // 刷新用户数据
+  userStore.refreshUserData()
+  
+  // 加载音效设置
+  const settings = userStore.settings
+  if (settings) {
+    soundManager.updateSettings(settings)
+  }
+  
+  // 播放结果页背景音乐
+  soundManager.playBackgroundMusic('result')
+  
+  // 根据成绩播放不同的通关音效
+  setTimeout(() => {
+    const acc = gameResult.value.accuracy
+    if (acc >= 0.95) {
+      soundManager.playPerfect()
+    } else {
+      soundManager.playVictory()
+    }
+  }, 500)
+})
+
+onBeforeUnmount(() => {
+  // 停止背景音乐
+  soundManager.stopMusic()
 })
 </script>
 

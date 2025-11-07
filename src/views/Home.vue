@@ -95,9 +95,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, onMounted, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStore'
+import { soundManager } from '@/utils/soundManager'
 import AppCard from '@/components/common/AppCard.vue'
 
 const router = useRouter()
@@ -144,6 +145,23 @@ const goToStats = () => {
 const goToSettings = () => {
   router.push('/settings')
 }
+
+// 生命周期
+onMounted(() => {
+  // 加载音效设置
+  const settings = userStore.settings
+  if (settings) {
+    soundManager.updateSettings(settings)
+  }
+  
+  // 播放主页背景音乐
+  soundManager.playBackgroundMusic('home')
+})
+
+onBeforeUnmount(() => {
+  // 停止背景音乐（离开主页时）
+  soundManager.stopMusic()
+})
 </script>
 
 <style scoped>

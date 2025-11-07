@@ -12,6 +12,7 @@
 import { onMounted } from 'vue'
 import { useUserStore } from '@/stores/userStore'
 import { useGameStore } from '@/stores/gameStore'
+import { soundManager } from '@/utils/soundManager'
 
 const userStore = useUserStore()
 const gameStore = useGameStore()
@@ -22,6 +23,12 @@ onMounted(async () => {
   
   // 加载词库数据
   await gameStore.loadWordsData()
+  
+  // 初始化音效设置
+  const settings = userStore.settings
+  if (settings) {
+    soundManager.updateSettings(settings)
+  }
   
   console.log('应用初始化完成')
 })
