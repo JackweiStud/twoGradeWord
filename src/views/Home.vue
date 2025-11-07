@@ -161,27 +161,27 @@ const todayCorrectCount = computed(() => {
 
 // 方法
 const startGame = () => {
-  soundManager.play('click')
+  soundManager.playClick()
   router.push('/difficulty')
 }
 
 const goToWrongWords = () => {
-  soundManager.play('click')
+  soundManager.playClick()
   router.push('/wrong-words')
 }
 
 const goToStats = () => {
-  soundManager.play('click')
+  soundManager.playClick()
   router.push('/stats')
 }
 
 const goToSettings = () => {
-  soundManager.play('click')
+  soundManager.playClick()
   router.push('/settings')
 }
 
 const goToTheme = () => {
-  soundManager.play('click')
+  soundManager.playClick()
   router.push('/settings')
 }
 
