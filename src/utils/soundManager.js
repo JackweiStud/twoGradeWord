@@ -16,6 +16,11 @@ class SoundManager {
     this.musicType = null
     this.initAudioContext()
     this.loadSettings()
+    
+    // 设置全局变量默认值：默认关闭背景音乐
+    if (window.BACKGROUND_MUSIC_ENABLED === undefined) {
+      window.BACKGROUND_MUSIC_ENABLED = false
+    }
   }
 
   // 初始化音频上下文
